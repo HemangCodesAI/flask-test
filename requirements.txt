@@ -1,2 +1,4 @@
 Flask==3.0.0
-replicate==0.14.0
+numpy==1.24.3
+Pillow==10.0.1
+tensorflow==2.13.1
