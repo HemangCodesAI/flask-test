@@ -1,24 +1,34 @@
-import os
-
-import replicate
+from PIL import Image
+import numpy as np
+from tensorflow.keras.models import load_model
 from flask import Flask, request
 
 app = Flask(__name__)
-os.environ.get("REPLICATE_API_TOKEN")
+def predict(image):
+    resized_image = image.resize((32, 32))
+    img_array = np.array(resized_image.convert('RGB'))
+    normalized_image = img_array / 255.0
+    model = load_model("achawala.h5")
+    ans = model.predict(normalized_image.reshape(1, 32, 32, 3))
+    print("huhua")
+    if ans[0][0] < ans[0][1]:
+        return "Non-Anemic"
+    else:
+        return "Anemic"
 
 @app.route("/")
 def index():
-    return "This is an alt tag generator!"
+    return "chal raha hai"    
 
-@app.route('/generate')
-def home():
-  # Get imageUrl query param
-  args = request.args
-  imageUrl = args.to_dict().get('imageUrl')
+@app.route('/predict', methods=['POST'])
+def predict_api():
+    try:
+        file = request.files['file']
+        image = Image.open(file)
+        prediction_result = predict(image)
+        print({"prediction_result": prediction_result})
+        return jsonify({"prediction_result": prediction_result})
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
-  # Run ML Model with imageUrl
-  model = replicate.models.get("salesforce/blip")
-  version = model.versions.get("2e1dddc8621f72155f24cf2e0adbde548458d3cab9f00c0139eea840d0ac4746")
-
-  # Get the alt text result and return it
-  return version.predict(image=imageUrl)
+        
