@@ -2,8 +2,7 @@
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/nutlope/alt-text-generator&env=REPLICATE_API_KEY&project-name=alt-tag-generator&repo-name=alt-tag-generator)
 
-This Flask API will generate a description for any image using AI. If you're looking for the TypeScript version, [click here](https://github.com/vercel/examples/tree/main/solutions/alt-tag-generator).
-
+This Flask API will generate a description for any image using AI
 ![Alt Image Generator](ogimage.png)
 
 ## How it works
